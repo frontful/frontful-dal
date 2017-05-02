@@ -1,0 +1,23 @@
+{
+  "name": "frontful-dal",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Data access layer focused on isomorphism, optimizations and observability",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontful/frontful-dal.git"
+  },
+  "scripts": {
+    "build": "babel-preset-frontful build",
+    "deploy": "babel-preset-frontful deploy"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "babel-preset-frontful": "0.x || 1.x",
+    "eslint-config-frontful": "0.x || 1.x"
+  }
+}
