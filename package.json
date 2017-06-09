@@ -13,9 +13,10 @@
     "deploy": "babel-preset-frontful deploy"
   },
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "query-string": "^4.3.4"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "babel-preset-frontful": "0.x || 1.x",
     "eslint-config-frontful": "0.x || 1.x"
