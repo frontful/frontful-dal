@@ -8,17 +8,22 @@
     "type": "git",
     "url": "https://github.com/frontful/frontful-dal.git"
   },
+  "main": "./dal/index.js",
   "scripts": {
     "build": "babel-preset-frontful build",
     "deploy": "babel-preset-frontful deploy"
   },
   "dependencies": {
+    "frontful-model": "0.x || 1.x",
     "isomorphic-fetch": "^2.2.1",
     "query-string": "^4.3.4"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "mobx": "^3.1.14"
+  },
   "devDependencies": {
     "babel-preset-frontful": "0.x || 1.x",
-    "eslint-config-frontful": "0.x || 1.x"
+    "eslint-config-frontful": "0.x || 1.x",
+    "mobx": "^3.1.14"
   }
 }

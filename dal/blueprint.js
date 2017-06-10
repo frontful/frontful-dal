@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import {dal} from 'frontful-dal'
+import {Models} from 'frontful-model'
 
 // --- twitter.js Twitter DAL ---
 
@@ -25,7 +26,7 @@ export class Twitter {
 // --- hackernews.js HackerNews DAL ---
 
 // `dal.require()` is uesed to require external to curent DAL dependencies
-@dal.config({
+@dal.config(() => ({
   url: 'https://hacker-news.firebaseio.com/v0/',
   mapping: {
     top: () => ({
@@ -40,7 +41,7 @@ export class Twitter {
       }
     },
   }
-})
+}))
 @dal.require((context) => ({
   twitter: context.dal.global(Twitter),
 }))
@@ -56,7 +57,7 @@ export class HackerNews {
 // Get top stories fron HackerNews and retweet the most-toppest-one
 
 // Create dal instances for current request or browser session
-const dal = new Dal({
+const models = new Models({
   config: {
     'twitter': {
       token: '0150b91a-a537-4bc9-9026-07c4bd74efe5'
@@ -65,7 +66,7 @@ const dal = new Dal({
 })
 
 // Resolve instance of HackerNews DAL class
-const hackerNews = dal.global(HackerNews)
+const hackerNews = models.global(HackerNews)
 
 // This is long form of accessing resource via path
 //const topStories = hackerNews.resolve('topstories.json')
