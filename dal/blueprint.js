@@ -25,11 +25,24 @@ export class Twitter {
 // --- hackernews.js HackerNews DAL ---
 
 // `dal.require()` is uesed to require external to curent DAL dependencies
+@dal.config({
+  url: 'https://hacker-news.firebaseio.com/v0/',
+  mapping: {
+    top: () => ({
+      path: `topstories.json`,
+    }),
+    item: {
+      request: (id) => ({
+        path: `item/${id}.json`,
+      }),
+      parser: (raw) => {
+        return raw.slice(0, 4)
+      }
+    },
+  }
+})
 @dal.require((context) => ({
   twitter: context.dal.global(Twitter),
-}))
-@dal.config(() => ({
-  url: 'https://hacker-news.firebaseio.com/v0/',
 }))
 export class HackerNews {
   retweet(itemId) {
@@ -46,13 +59,20 @@ export class HackerNews {
 const dal = new Dal({
   config: {
     'twitter': {
-      token: 'whatewer'
+      token: '0150b91a-a537-4bc9-9026-07c4bd74efe5'
     }
   }
 })
 
+// Resolve instance of HackerNews DAL class
 const hackerNews = dal.global(HackerNews)
-const topStories = hackerNews.resolve('topstories.json')
-hackerNews.retweet(topStories[0])
 
-// TODO: Incorporate models or make DALs as superset of models for serialization purpouses
+// This is long form of accessing resource via path
+//const topStories = hackerNews.resolve('topstories.json')
+
+// This is short form of accessing resource via mapping
+const topStories = hackerNews.top()
+
+topStories.then((topStories) => {
+  hackerNews.retweet(topStories[0])
+})
