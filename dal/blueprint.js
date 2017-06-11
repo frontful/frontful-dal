@@ -33,12 +33,10 @@ export class Twitter {
       path: `topstories.json`,
     }),
     item: {
-      request: (id) => ({
+      options: (id) => ({
         path: `item/${id}.json`,
       }),
-      parser: (raw) => {
-        return raw.slice(0, 4)
-      }
+      josn: (json) => json.slice(0, 4)
     },
   }
 }))
@@ -69,11 +67,13 @@ const models = new Models({
 const hackerNews = models.global(HackerNews)
 
 // This is long form of accessing resource via path
-//const topStories = hackerNews.resolve('topstories.json')
+// hackerNews.resolve('topstories.json').then(...)
 
 // This is short form of accessing resource via mapping
-const topStories = hackerNews.top()
-
-topStories.then((topStories) => {
+hackerNews.top().then((topStories) => {
   hackerNews.retweet(topStories[0])
+})
+
+hackerNews.item.update('/item', {
+  text: 'Hello world'
 })

@@ -1,4 +1,5 @@
 import {model, formatter} from 'frontful-model'
+import {prototype} from './dal.prototype'
 
 function dal(configurator) {
   return dal.config(configurator)
@@ -12,34 +13,19 @@ dal.require = function(requirer) {
 }
 
 dal.config = function(configurator) {
-  if (!configurator) {
-    throw new Error('[frontful-dal] Missing `configurator`')
-  }
-
   return function (Type) {
     function Dal(data, context) {
-      if (!context) {
-        throw new Error('[frontful-dal] Missing `context`')
-      }
-
-      this.context = context
-
-      if (Dal.requirer) {
-        Object.assign(this, Dal.requirer.call(this, this.context))
-      }
-
-      Object.assign(this, {
-        config: configurator.call(this, this.context),
+      this.prototype['initialize.dal'].call(this, data, context, {
+        configurator: configurator,
+        requirer: Dal.requirer,
       })
-
       Type.call(this, data, this.context)
     }
 
     Dal.prototype = Object.create(Type.prototype)
+    Dal.prototype.constructor = Dal
 
-    Object.assign(Dal.prototype, {
-      constructor: Dal,
-    })
+    Object.assign(Dal.prototype, prototype)
 
     return model.format({
       data: formatter.map()
