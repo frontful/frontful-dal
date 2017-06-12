@@ -41,7 +41,6 @@ const prototype = {
       parser: parser || defaultParser,
       method: 'GET',
       mode: 'cors',
-      credentials: 'include',
       cache: 'no-store',
       headers: {
         'Accept': 'application/json',
@@ -56,9 +55,10 @@ const prototype = {
 
   'initialize.mapping'(mapping, name = '') {
     const keys = Object.keys(mapping)
-    return keys.map((key) => (
-      this['initialize.mapping.item'](mapping[key], name ? `${name}.${key}` : key)
-    ))
+    return keys.reduce((result, key) => {
+      result[key] = this['initialize.mapping.item'](mapping[key], name ? `${name}.${key}` : key)
+      return result
+    }, {})
   },
 
   'initialize.mapping.item'(item, name) {
@@ -82,7 +82,7 @@ const prototype = {
         return method.resolve(...args)
       }
 
-      let parser = null
+      let parser = defaultParser
 
       if (item.response) {
         parser = item.response
@@ -148,9 +148,43 @@ const prototype = {
     return null
   },
 
+  resolve(path, options) {
+    const key = `${options.name}:${normalizePath(path)}`
+    if (this.data.has(key)) {
+      return this.data.get(key)
+    }
+    else {
+      return this.get(path, options)
+    }
+  },
+  get(path, options) {
+    return this.request(path, null, {
+      ...options,
+      method: 'GET'
+    })
+  },
+  post(path, body, options) {
+    return this.request(path, body, {
+      ...options,
+      method: 'POST'
+    })
+  },
+  put(path, body, options) {
+    return this.request(path, body, {
+      ...options,
+      method: 'PUT'
+    })
+  },
+  delete(path, body, options) {
+    return this.request(path, body, {
+      ...options,
+      method: 'DELETE'
+    })
+  },
+
   request(path, body, options) {
     const normalPath = normalizePath(path)
-    const url = `${this.config.url}${normalPath}`
+    const url = `${this.url}${normalPath}`
     const {parser, name, ...fetchOptions} = deepExtend({}, this.options, options)
 
     fetchOptions.method = fetchOptions.method.toUpperCase()

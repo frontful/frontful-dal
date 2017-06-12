@@ -1,6 +1,6 @@
 {
   "name": "frontful-dal",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "private": true,
   "description": "Data access layer focused on isomorphism, optimizations and observability",
   "license": "MIT",
@@ -16,17 +16,17 @@
   "dependencies": {
     "deep-equal": "^1.0.1",
     "deep-extend": "^0.5.0",
-    "frontful-model": "0.x || 1.x",
     "isomorphic-fetch": "^2.2.1",
     "json-stable-stringify": "^1.0.1",
     "query-string": "^4.3.4"
   },
   "peerDependencies": {
-    "mobx": "^3.1.14"
+    "frontful-model": "0.x || 1.x"
   },
   "devDependencies": {
     "babel-preset-frontful": "0.x || 1.x",
     "eslint-config-frontful": "0.x || 1.x",
+    "frontful-model": "0.x || 1.x",
     "mobx": "^3.1.14"
   }
 }

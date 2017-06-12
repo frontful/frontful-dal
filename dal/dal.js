@@ -15,7 +15,7 @@ dal.require = function(requirer) {
 dal.config = function(configurator) {
   return function (Type) {
     function Dal(data, context) {
-      this.prototype['initialize.dal'].call(this, data, context, {
+      Dal.prototype['initialize.dal'].call(this, data, context, {
         configurator: configurator,
         requirer: Dal.requirer,
       })
