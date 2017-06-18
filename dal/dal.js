@@ -5,7 +5,7 @@ function dal(configurator) {
   return dal.config(configurator)
 }
 
-dal.require = function(requirer) {
+dal.define = function(requirer) {
   return function(Dal) {
     Dal.requirer = requirer
     return Dal

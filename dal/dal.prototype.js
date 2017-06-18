@@ -15,7 +15,6 @@ function normalizePath(path) {
 function defaultParser(json) {
   return json
 }
-
 defaultParser.type = 'json'
 
 const prototype = {
@@ -149,14 +148,15 @@ const prototype = {
   },
 
   resolve(path, options) {
-    const key = `${options.name}:${normalizePath(path)}`
+    const key = `${(options && options.name) ? `${options.name}:` : ''}${normalizePath(path)}`
     if (this.data.has(key)) {
-      return this.data.get(key)
+      return Promise.resolve(this.data.get(key))
     }
     else {
       return this.get(path, options)
     }
   },
+
   get(path, options) {
     return this.request(path, null, {
       ...options,
@@ -210,7 +210,7 @@ const prototype = {
         }
       }).then((parsed) => {
         if (fetchOptions.method === 'GET') {
-          this.data.set(`${name}:${normalPath}`, parsed)
+          this.data.set(`${name ? `${name}:` : ''}${normalPath}`, parsed)
         }
         return parsed
       })
