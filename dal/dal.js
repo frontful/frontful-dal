@@ -5,19 +5,21 @@ function dal(configurator) {
   return dal.config(configurator)
 }
 
-dal.define = function(requirer) {
+dal.define = function(definer) {
   return function(Dal) {
-    Dal.requirer = requirer
+    Dal.__dal_definer__ = definer
     return Dal
   }
 }
 
 dal.config = function(configurator) {
   return function (Type) {
+    let Model
+
     function Dal(data, context) {
       Dal.prototype['initialize.dal'].call(this, data, context, {
         configurator: configurator,
-        requirer: Dal.requirer,
+        definer: Model.__dal_definer__,
       })
       Type.call(this, data, this.context)
     }
@@ -27,9 +29,11 @@ dal.config = function(configurator) {
 
     Object.assign(Dal.prototype, prototype)
 
-    return model.format({
+    Model = model.format({
       data: formatter.map()
     })(Dal)
+
+    return Model
   }
 }
 

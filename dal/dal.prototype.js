@@ -18,7 +18,7 @@ function defaultParser(json) {
 defaultParser.type = 'json'
 
 const prototype = {
-  'initialize.dal'(data, context, {configurator, requirer}) {
+  'initialize.dal'(data, context, {configurator, definer}) {
     if (!context) {
       throw new Error('[frontful-dal] Missing `context`')
     }
@@ -29,8 +29,8 @@ const prototype = {
 
     this.context = context
 
-    if (requirer) {
-      Object.assign(this, requirer.call(this, this.context))
+    if (definer) {
+      Object.assign(this, definer.call(this, this.context))
     }
 
     const {url, mapping, parser, ...options} = configurator.call(this, this.context)
@@ -126,10 +126,8 @@ const prototype = {
 
     request.then(() => {
       this.memoized[method][path].splice(index, 1)
-      return null
-    }).catch((error) => {
+    }).catch(() => {
       this.memoized[method][path].splice(index, 1);
-      throw error
     })
 
     return request
@@ -202,6 +200,9 @@ const prototype = {
 
     return this.memoized(memoizeKey) || this.memoize(memoizeKey, Promise.resolve(
       fetch(url, fetchOptions)).then((response) => {
+        if (response.status >= 400) {
+          throw new Error(response.status)
+        }
         if (parser.type === 'json' || parser.type === 'text') {
           return response[parser.type]().then(parser)
         }
