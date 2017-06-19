@@ -1,6 +1,6 @@
 {
   "name": "frontful-dal",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "description": "Data access layer focused on isomorphism, optimizations and observability",
   "license": "MIT",
