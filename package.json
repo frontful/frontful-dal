@@ -1,14 +1,14 @@
 {
-  "name": "frontful-dal",
-  "version": "0.0.8",
+  "name": "frontful-dao",
+  "version": "0.0.10",
   "private": true,
-  "description": "Data access layer focused on isomorphism, optimizations and observability",
+  "description": "Data access object focused on memoization, caching, observability and isomorphism",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frontful/frontful-dal.git"
+    "url": "https://github.com/frontful/frontful-dao.git"
   },
-  "main": "./dal/index.js",
+  "main": "./dao/index.js",
   "scripts": {
     "build": "babel-preset-frontful build",
     "deploy": "babel-preset-frontful deploy"

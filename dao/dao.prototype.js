@@ -18,13 +18,13 @@ function defaultParser(json) {
 defaultParser.type = 'json'
 
 const prototype = {
-  'initialize.dal'(data, context, {configurator, definer}) {
+  'initialize.dao'(data, context, {configurator, definer}) {
     if (!context) {
-      throw new Error('[frontful-dal] Missing `context`')
+      throw new Error('[frontful-dao] Missing `context`')
     }
 
     if (!configurator) {
-      throw new Error('[frontful-dal] Missing `configurator`')
+      throw new Error('[frontful-dao] Missing `configurator`')
     }
 
     this.context = context
