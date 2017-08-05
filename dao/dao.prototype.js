@@ -1,7 +1,8 @@
-import fetch from 'isomorphic-fetch'
-import deepExtend from 'deep-extend'
 import deepEqual from 'deep-equal'
+import deepExtend from 'deep-extend'
+import fetch from 'isomorphic-fetch'
 import jsonStableStringify from 'json-stable-stringify'
+import {HttpError} from './HttpError'
 
 const urlParts = /(^.*?(?=\?|#|$))(\?.*?(?=#|$))?(#.*?(?=$))?/i
 
@@ -198,16 +199,29 @@ const prototype = {
       body: fetchOptions.body,
     }
 
+    const parse = (response) => {
+      if (parser.type === 'json' || parser.type === 'text') {
+        return response[parser.type]().then(parser)
+      }
+      else {
+        return Promise.resolve(parser(response))
+      }
+    }
+
     return this.memoized(memoizeKey) || this.memoize(memoizeKey, Promise.resolve(
       fetch(url, fetchOptions)).then((response) => {
-        if (response.status >= 400) {
-          throw new Error(response.status)
+        if (response.status === 204) {
+          return {}
         }
-        if (parser.type === 'json' || parser.type === 'text') {
-          return response[parser.type]().then(parser)
+        else if (response.status >= 400) {
+          return parse(response).catch(() => {
+            return HttpError.create(response).then((error) => {throw error})
+          }).then((parsed) => {
+            return HttpError.create(response, parsed).then((error) => {throw error})
+          })
         }
         else {
-          return parser(response)
+          return parse(response)
         }
       }).then((parsed) => {
         if (fetchOptions.method === 'GET') {
