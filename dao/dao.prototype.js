@@ -211,14 +211,17 @@ const prototype = {
     return this.memoized(memoizeKey) || this.memoize(memoizeKey, Promise.resolve(
       fetch(url, fetchOptions)).then((response) => {
         if (response.status === 204) {
-          return {}
+          return null
         }
         else if (response.status >= 400) {
-          return parse(response).catch(() => {
-            return HttpError.create(response).then((error) => {throw error})
-          }).then((parsed) => {
-            return HttpError.create(response, parsed).then((error) => {throw error})
-          })
+          let _response = response.clone()
+          return parse(response)
+            .catch(() => _response.text())
+            .catch(() => null)
+            .then((parsed) => {
+              _response = null
+              throw new HttpError(response, parsed)
+            })
         }
         else {
           return parse(response)
