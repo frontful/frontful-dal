@@ -1,6 +1,6 @@
 {
   "name": "frontful-dao",
-  "version": "0.0.12",
+  "version": "2.0.1",
   "private": true,
   "description": "Data access object focused on memoization, caching, observability and isomorphism",
   "license": "MIT",
@@ -10,8 +10,10 @@
   },
   "main": "./dao/index.js",
   "scripts": {
-    "build": "babel-preset-frontful build",
-    "deploy": "babel-preset-frontful deploy"
+    "build": "yarn test && babel-preset-frontful build",
+    "deploy": "yarn test && babel-preset-frontful deploy",
+    "test": "yarn test:eslint",
+    "test:eslint": "node ./node_modules/eslint/bin/eslint.js --max-warnings 0 ."
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
@@ -19,15 +21,15 @@
     "es6-error": "^4.0.2",
     "isomorphic-fetch": "^2.2.1",
     "json-stable-stringify": "^1.0.1",
-    "query-string": "^4.3.4"
+    "query-string": "^5.0.0"
   },
   "peerDependencies": {
-    "frontful-model": "0.x || 1.x"
+    "frontful-model": "2.x"
   },
   "devDependencies": {
-    "babel-preset-frontful": "0.x || 1.x",
-    "eslint-config-frontful": "0.x || 1.x",
-    "frontful-model": "0.x || 1.x",
-    "mobx": "^3.1.14"
+    "babel-preset-frontful": "2.x",
+    "eslint-config-frontful": "2.x",
+    "frontful-model": "2.x",
+    "mobx": "3.x"
   }
 }
