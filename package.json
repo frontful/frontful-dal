@@ -1,6 +1,6 @@
 {
   "name": "frontful-dao",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Data access object focused on memoization, caching, observability and isomorphism",
   "license": "MIT",

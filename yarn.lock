@@ -1207,8 +1207,8 @@ frontful-config@2.x:
     object-path "^0.11.4"
 
 frontful-model@2.x:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/frontful-model/-/frontful-model-2.0.1.tgz#20efb8df3fe584c8b45d254d5cfd9fa54fd1e871"
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/frontful-model/-/frontful-model-2.0.2.tgz#fc537ae217d819bcee93a76fa072da2ebaadbc06"
   dependencies:
     deep-extend "^0.5.0"
     frontful-utils "2.x"
@@ -1730,8 +1730,8 @@ pseudomap@^1.0.2:
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
 
 query-string@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.0.tgz#fbdf7004b4d2aff792f9871981b7a2794f555947"
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.1.tgz#6e2b86fe0e08aef682ecbe86e85834765402bd88"
   dependencies:
     decode-uri-component "^0.2.0"
     object-assign "^4.1.0"

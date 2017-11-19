@@ -1,8 +1,8 @@
 import {model, formatter} from 'frontful-model'
 import {prototype} from './dao.prototype'
 
-function dao(configurator) {
-  return dao.config(configurator)
+function dao(configurator, identifier) {
+  return dao.config(configurator, identifier)
 }
 
 dao.define = function(definer) {
@@ -12,7 +12,7 @@ dao.define = function(definer) {
   }
 }
 
-dao.config = function(configurator) {
+dao.config = function(configurator, identifier) {
   return function (Type) {
     let Model
 
@@ -31,7 +31,7 @@ dao.config = function(configurator) {
 
     Model = model.format({
       data: formatter.map()
-    })(Dao)
+    }, identifier)(Dao)
 
     return Model
   }
