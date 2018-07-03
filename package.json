@@ -1,6 +1,6 @@
 {
   "name": "frontful-dao",
-  "version": "2.0.4",
+  "version": "3.0.1",
   "private": true,
   "description": "Data access object focused on memoization, caching, observability and isomorphism",
   "license": "MIT",
@@ -17,19 +17,19 @@
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "deep-extend": "^0.5.0",
+    "deep-extend": "^0.6.0",
     "es6-error": "^4.0.2",
     "isomorphic-fetch": "^2.2.1",
     "json-stable-stringify": "^1.0.1",
     "query-string": "^5.0.0"
   },
   "peerDependencies": {
-    "frontful-model": "2.x"
+    "frontful-model": "3.x"
   },
   "devDependencies": {
-    "babel-preset-frontful": "2.x",
-    "eslint-config-frontful": "2.x",
-    "frontful-model": "2.x",
-    "mobx": "3.x"
+    "babel-preset-frontful": "3.x",
+    "eslint-config-frontful": "3.x",
+    "frontful-model": "3.x",
+    "mobx": "4.x"
   }
 }
