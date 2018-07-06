@@ -118,18 +118,20 @@ const prototype = {
     }
   },
 
-  memoize({method, path, body}, request) {
-    this.memoized = this.memoized || {}
-    this.memoized[method] = this.memoized[method] || {}
-    this.memoized[method][path] = this.memoized[method][path] || []
+  memoize({method, path, body}, request, shouldMemoize) {
+    if (shouldMemoize) {
+      this.memoized = this.memoized || {}
+      this.memoized[method] = this.memoized[method] || {}
+      this.memoized[method][path] = this.memoized[method][path] || []
 
-    const index = this.memoized[method][path].push({body, request}) - 1
+      const index = this.memoized[method][path].push({body, request}) - 1
 
-    request.then(() => {
-      this.memoized[method][path].splice(index, 1)
-    }).catch(() => {
-      this.memoized[method][path].splice(index, 1);
-    })
+      request.then(() => {
+        this.memoized[method][path].splice(index, 1)
+      }).catch(() => {
+        this.memoized[method][path].splice(index, 1);
+      })
+    }
 
     return request
   },
@@ -181,14 +183,14 @@ const prototype = {
     })
   },
 
-  request(path, body, options) {
+  request(path, body, options, retryCount) {
     const normalPath = normalizePath(path)
     const url = `${this.url}${normalPath}`
     const {parser, name, ...fetchOptions} = deepExtend({}, this.options, options)
 
     fetchOptions.method = fetchOptions.method.toUpperCase()
 
-    if (fetchOptions.method !== 'GET') {
+    if (fetchOptions.method !== 'GET' && body && !fetchOptions.body) {
       const bodyStr = jsonStableStringify(body)
       fetchOptions.body = bodyStr && bodyStr.replace(/[\u007F-\uFFFF]/gm, (c) => '\\u' + ('0000' + c.charCodeAt(0).toString(16)).substr(-4))
     }
@@ -208,7 +210,9 @@ const prototype = {
       }
     }
 
-    return this.memoized(memoizeKey) || this.memoize(memoizeKey, Promise.resolve(
+    const shouldMemoize = !retryCount
+
+    return (shouldMemoize && this.memoized(memoizeKey)) || this.memoize(memoizeKey, Promise.resolve(
       fetch(url, fetchOptions)).then((response) => {
         if (response.status === 204) {
           return null
@@ -231,7 +235,15 @@ const prototype = {
           this.data.set(`${name ? `${name}:` : ''}${normalPath}`, parsed)
         }
         return parsed
-      })
+      }).catch((error) => {
+        if (fetchOptions.onError) {
+          retryCount = retryCount || 0
+          return Promise.resolve(fetchOptions.onError.call(this, error, retryCount)).then(() => {
+            return this.request(path, body, options, retryCount + 1)
+          })
+        }
+        throw error
+      }), shouldMemoize
     )
   }
 }
