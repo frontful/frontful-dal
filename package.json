@@ -1,6 +1,6 @@
 {
   "name": "frontful-dao",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": true,
   "description": "Data access object focused on memoization, caching, observability and isomorphism",
   "license": "MIT",
@@ -14,6 +14,9 @@
     "deploy": "yarn test && babel-preset-frontful deploy",
     "test": "yarn test:eslint",
     "test:eslint": "node ./node_modules/eslint/bin/eslint.js --max-warnings 0 ."
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
