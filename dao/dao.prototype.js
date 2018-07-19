@@ -185,7 +185,11 @@ const prototype = {
 
   request(path, body, options, retryCount) {
     const normalPath = normalizePath(path)
-    const url = `${this.url}${normalPath}`
+    let url = `${this.url}${normalPath}`
+    if (/^https?:\/\/|^\/\//i.test(normalPath)) {
+      url = normalPath
+    }
+
     const {parser, name, ...fetchOptions} = deepExtend({}, this.options, options)
 
     fetchOptions.method = fetchOptions.method.toUpperCase()
