@@ -242,7 +242,7 @@ const prototype = {
       }).catch((error) => {
         if (fetchOptions.onError) {
           retryCount = retryCount || 0
-          return Promise.resolve(fetchOptions.onError.call(this, error, retryCount)).then(() => {
+          return Promise.resolve(fetchOptions.onError.call(this, error, retryCount, fetchOptions.onErrorFail)).then(() => {
             return this.request(path, body, options, retryCount + 1)
           })
         }
